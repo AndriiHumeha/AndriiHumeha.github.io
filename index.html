@@ -17,8 +17,13 @@
   })();
 </script>
 <style>
-  @font-face { font-family: "Zakon"; src: url("assets/fonts/Zakon-Bold.otf") format("opentype"); font-weight: 700 800; font-display: swap; }
-  @font-face { font-family: "Zakon"; src: url("assets/fonts/Zakon-Regular.otf") format("opentype"); font-weight: 400 600; font-display: swap; }
+  @font-face {
+    font-family: "Zakon";
+    src: url("assets/fonts/Zakon-Bold.woff2") format("woff2"),
+         url("assets/fonts/Zakon-Bold.otf") format("opentype");
+    font-weight: 600 900;
+    font-display: swap;
+  }
   :root {
     --bg: #FFE4D1;
     --surface: #FFF2E6;
@@ -90,7 +95,7 @@
   .theme-btn {
     font: inherit; font-size: 0.9rem; cursor: pointer;
     background: transparent; color: var(--ink);
-    border: 1.5px solid var(--line); border-radius: 999px;
+    border: 1.5px solid var(--line); border-radius: 6px;
     padding: 0.3rem 0.85rem;
   }
   .theme-btn:hover { border-color: var(--attn); }
@@ -111,13 +116,13 @@
     display: inline-block; margin: 0.75rem 0 1.75rem;
     background: var(--star); color: var(--star-ink);
     font-weight: 600; font-size: 0.95rem;
-    padding: 0.35rem 0.9rem; border-radius: 999px;
+    padding: 0.35rem 0.9rem; border-radius: 5px;
   }
   .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
   .btn {
     display: inline-flex; align-items: center;
     font-weight: 600; text-decoration: none;
-    padding: 0.7rem 1.2rem; border-radius: 10px;
+    padding: 0.7rem 1.2rem; border-radius: 6px;
     border: 2px solid var(--ink);
   }
   .btn:hover { background: var(--attn-soft); }
@@ -128,11 +133,41 @@
   section { padding: clamp(3rem, 7vw, 5rem) 0; border-top: 1px solid var(--line); }
   .section-head { margin-bottom: 2rem; }
   .measure { max-width: 64ch; }
+  .about-text { max-width: none; }
+
+  .hero-grid { display: grid; grid-template-columns: 1fr minmax(240px, 360px); gap: clamp(2rem, 6vw, 5rem); align-items: center; }
+  .portrait { position: relative; margin: 0; padding: 12px; --t: 46px; --b: 16px; }
+  .portrait::before, .portrait::after, .portrait-frame, .portrait-inner {
+    clip-path: polygon(var(--c1) 0, calc(100% - var(--c1)) 0, 100% var(--c1), 100% calc(100% - var(--c2)),
+                       calc(100% - var(--c2)) 100%, var(--c2) 100%, 0 calc(100% - var(--c2)), 0 var(--c1));
+  }
+  .portrait::before { content: ""; position: absolute; inset: 0; background: var(--attn); --c1: var(--t); --c2: var(--b); }
+  .portrait::after { content: ""; position: absolute; inset: 1.5px; background: var(--bg); --c1: calc(var(--t) - 0.6px); --c2: calc(var(--b) - 0.6px); }
+  .portrait-frame {
+    position: relative; z-index: 1; aspect-ratio: 4 / 5;
+    background: var(--ink);
+    --c1: calc(var(--t) - 5px); --c2: calc(var(--b) - 5px);
+  }
+  .portrait-inner {
+    position: absolute; inset: 2px; background: var(--surface); overflow: hidden;
+    display: grid; place-items: center;
+    --c1: calc(var(--t) - 5.8px); --c2: calc(var(--b) - 5.8px);
+  }
+  .portrait-mark {
+    position: absolute; z-index: 2; top: -5px; left: 50%;
+    width: 10px; height: 10px; background: var(--attn);
+    transform: translateX(-50%) rotate(45deg);
+  }
+  .portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .portrait .initials {
+    font-family: "Zakon", "Spectral", Georgia, serif; font-weight: 700;
+    font-size: clamp(4rem, 9vw, 6rem); color: var(--muted); letter-spacing: -0.02em;
+  }
 
   /* skills: bento boxes */
   .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.9rem; }
   .box {
-    border: 1.5px solid var(--line); border-radius: 16px;
+    border: 1.5px solid var(--line); border-radius: 8px;
     background: var(--surface); padding: 1.15rem 1.25rem 1.3rem;
   }
   .box h3 { font-size: 1.05rem; margin-bottom: 0.8rem; }
@@ -144,7 +179,7 @@
   .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; list-style: none; margin: 0; padding: 0; }
   .chips li {
     font-size: 0.88rem; padding: 0.2rem 0.7rem;
-    border: 1.5px solid var(--line); border-radius: 999px;
+    border: 1.5px solid var(--line); border-radius: 5px;
     background: var(--bg);
   }
   .box.hot .chips li { background: rgba(255, 242, 230, 0.55); border-color: rgba(46, 28, 12, 0.3); }
@@ -157,7 +192,7 @@
   .now {
     background: var(--surface);
     border-left: 6px solid var(--attn);
-    border-radius: 0 14px 14px 0;
+    border-radius: 0 8px 8px 0;
     padding: 1.5rem 1.75rem;
     max-width: 72ch;
   }
@@ -169,7 +204,7 @@
   .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
   .card {
     display: flex; flex-direction: column;
-    border: 1.5px solid var(--line); border-radius: 16px;
+    border: 1.5px solid var(--line); border-radius: 8px;
     background: var(--surface); padding: 1.5rem;
   }
   .card-top { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.88rem; color: var(--muted); margin-bottom: 0.6rem; }
@@ -182,27 +217,46 @@
   .card ul.points li::marker { color: var(--attn); }
   .card .chips { margin-top: auto; }
   .card figure { margin: 1.25rem 0 0; }
-  .card figure img { width: 100%; border-radius: 10px; border: 1.5px solid var(--line); background: var(--bg); }
+  .card figure img { width: 100%; border-radius: 5px; border: 1.5px solid var(--line); background: var(--bg); }
   .card figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
 
   .card:last-child:nth-child(odd) { grid-column: 1 / -1; }
 
   /* education */
-  .edu { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .edu { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .edu-item { border: 1.5px solid var(--line); border-radius: 8px; background: var(--surface); padding: 1.4rem 1.5rem; }
+  .edu-item p { margin: 0; }
   .edu h3 { font-size: 1.2rem; margin-bottom: 0.25rem; }
-  .edu .meta { margin-bottom: 0.5rem; }
-  .grade { font-family: "Zakon", "Spectral", Georgia, serif; font-weight: 800; font-size: 1.6rem; }
+  .edu .meta { margin-bottom: 0.75rem; }
+  .grade { font-family: "Zakon", "Spectral", Georgia, serif; font-weight: 700; font-size: 1.8rem; margin-right: 0.3rem; }
 
   /* contact */
-  .contact-mail {
-    font-family: "Zakon", "Spectral", Georgia, serif;
-    font-size: clamp(1.5rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em;
-    word-break: break-word;
+  .contact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.9rem; margin-top: 1.75rem; }
+  .tile {
+    display: flex; flex-direction: column; gap: 0.35rem; justify-content: space-between;
+    min-height: 7rem; padding: 1.1rem 1.25rem;
+    border: 1.5px solid var(--line); border-radius: 8px; background: var(--surface);
+    text-decoration: none; color: inherit;
   }
+  a.tile:hover { border-color: var(--attn); }
+  .tile-label { font-size: 0.88rem; color: var(--muted); }
+  .tile-value { font-weight: 600; font-size: 1.05rem; overflow-wrap: anywhere; }
+  .tile.wide { grid-column: span 2; }
+  .tile.hot { background: var(--attn); border-color: var(--attn); color: #2E1C0C; }
+  .tile.hot .tile-label { color: rgba(46, 28, 12, 0.72); }
+  .tile.hot .tile-value { font-family: "Zakon", "Spectral", Georgia, serif; font-size: clamp(1.35rem, 2.6vw, 1.9rem); font-weight: 700; }
+  a.tile.hot:hover { border-color: #2E1C0C; }
+
   footer { padding: 2rem 0 3rem; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--line); }
+  footer .wrap { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
 
   @media (max-width: 860px) {
+    .hero-grid { grid-template-columns: 1fr; }
+    .portrait { width: min(190px, 52%); order: -1; padding: 8px; --t: 28px; --b: 10px; }
+    .portrait .initials { font-size: 3rem; }
     .edu, .cards { grid-template-columns: 1fr; }
+    .contact-grid { grid-template-columns: 1fr 1fr; }
+    .tile.wide { grid-column: 1 / -1; }
     .bento { grid-template-columns: 1fr; }
     .span-2, .span-3, .span-4 { grid-column: auto; }
     .nav-links { display: none; }
@@ -230,7 +284,7 @@
 </nav>
 
 <header class="hero" id="top">
-  <div class="wrap">
+  <div class="wrap hero-grid">
     <div>
       <h1><span>Andrii</span><span>Humeha</span></h1>
       <p class="lede">Data Science &amp; AI student building machine learning systems, from model to deployment.</p>
@@ -244,6 +298,15 @@
       </div>
     </div>
 
+    <figure class="portrait">
+      <span class="portrait-mark" aria-hidden="true"></span>
+      <div class="portrait-frame">
+        <div class="portrait-inner">
+          <span class="initials" aria-hidden="true">AH</span>
+          <img src="assets/profile.jpg" alt="Andrii Humeha" onerror="this.remove()">
+        </div>
+      </div>
+    </figure>
   </div>
 </header>
 
@@ -251,7 +314,7 @@
   <section id="about">
     <div class="wrap">
       <div class="section-head"><h2>About</h2></div>
-      <div class="measure">
+      <div class="about-text">
         <p>I study Data Science &amp; AI at BUas, where I’ve averaged 9.35/10 over my first two years, alongside a part-time Law degree at Taras Shevchenko National University of Kyiv. Most of my projects have been for real clients: language models for Ukrainian, computer vision and robot control for plant research, and the databases, APIs and pipelines that keep ML systems running.</p>
         <p>What I care about most is understanding why a solution works, not only that it does. I test ideas against simple baselines, check that a metric means what it seems to, and document the limits of what I build as clearly as its results.</p>
       </div>
@@ -397,12 +460,12 @@
     <div class="wrap">
       <div class="section-head"><h2>Education</h2></div>
       <div class="edu">
-        <div>
+        <div class="edu-item">
           <h3>BASc Applied Data Science &amp; Artificial Intelligence</h3>
           <div class="meta"><span>Breda University of Applied Sciences</span><span>2024 – 2028 (expected)</span></div>
           <p><span class="grade">9.35/10</span> average over the first two years</p>
         </div>
-        <div>
+        <div class="edu-item">
           <h3>LLB Law, part-time</h3>
           <div class="meta"><span>Taras Shevchenko National University of Kyiv</span><span>2024 – 2029 (expected)</span></div>
           <p>Civil law and legal theory, with an interest in where law meets technology: AI governance, data protection and tech regulation.</p>
@@ -414,14 +477,21 @@
   <section id="contact">
     <div class="wrap">
       <div class="section-head"><h2>Contact</h2></div>
-      <p class="measure">The fastest way to reach me is email. I’m happy to walk through any of the projects above, including the ones whose code is private.</p>
-      <p><a class="contact-mail" href="mailto:humehaandrii@gmail.com">humehaandrii@gmail.com</a></p>
+      <p class="measure">Email is the fastest way to reach me. I’m happy to walk through any of the projects above, including the ones whose code is private.</p>
+      <div class="contact-grid">
+        <a class="tile hot wide" href="mailto:humehaandrii@gmail.com"><span class="tile-label">Email</span><span class="tile-value">humehaandrii@gmail.com</span></a>
+        <a class="tile" href="tel:+380957207710"><span class="tile-label">Phone</span><span class="tile-value">+380 95 720 7710</span></a>
+        <div class="tile"><span class="tile-label">Location</span><span class="tile-value">Breda, Netherlands</span></div>
+        <a class="tile wide" href="https://www.linkedin.com/in/andrii-humeha-1b44a9327/"><span class="tile-label">LinkedIn</span><span class="tile-value">linkedin.com/in/andrii-humeha</span></a>
+        <a class="tile" href="https://github.com/AndriiHumeha"><span class="tile-label">GitHub</span><span class="tile-value">AndriiHumeha</span></a>
+        <a class="tile" href="assets/Andrii_Humeha_CV.pdf" download><span class="tile-label">CV</span><span class="tile-value">Download PDF</span></a>
+      </div>
     </div>
   </section>
 </main>
 
 <footer>
-  <div class="wrap">Andrii Humeha, 2026.</div>
+  <div class="wrap"><span>Andrii Humeha, 2026.</span><a href="#top">Back to top</a></div>
 </footer>
 
 <script>
