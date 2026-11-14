@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Andrii Humeha — Data Science & AI</title>
+<meta name="description" content="Andrii Humeha, Data Science & AI student at Breda University of Applied Sciences. Machine learning systems from model to deployment.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Spectral:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (t) document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  })();
+</script>
+<style>
+  @font-face { font-family: "Zakon"; src: url("assets/fonts/Zakon-Bold.woff2") format("woff2"); font-weight: 700 800; font-display: swap; }
+  @font-face { font-family: "Zakon"; src: url("assets/fonts/Zakon-Regular.woff2") format("woff2"); font-weight: 400 600; font-display: swap; }
+  :root {
+    --bg: #FFE4D1;
+    --surface: #FFF2E6;
+    --ink: #2E1C0C;
+    --muted: #725238;
+    --line: rgba(46, 28, 12, 0.16);
+    --attn: #FF951C;
+    --attn-soft: rgba(255, 149, 28, 0.2);
+    --star: #2EA8FF;
+    --star-ink: #062538;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #1D150D;
+      --surface: #2B2014;
+      --ink: #FBE7D3;
+      --muted: #CDB298;
+      --line: rgba(251, 231, 211, 0.14);
+      --attn-soft: rgba(255, 149, 28, 0.17);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1D150D;
+    --surface: #2B2014;
+    --ink: #FBE7D3;
+    --muted: #CDB298;
+    --line: rgba(251, 231, 211, 0.14);
+    --attn-soft: rgba(255, 149, 28, 0.17);
+    color-scheme: dark;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; text-decoration-color: var(--attn); text-decoration-thickness: 2px; text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 3px; }
+  :focus-visible { outline: 3px solid var(--attn); outline-offset: 3px; border-radius: 4px; }
+
+  h1, h2, h3 { font-family: "Zakon", "Spectral", Georgia, serif; line-height: 1.1; margin: 0; }
+  h2 { font-size: clamp(1.75rem, 3.5vw, 2.4rem); font-weight: 700; letter-spacing: -0.01em; }
+  h3 { font-size: 1.45rem; font-weight: 700; letter-spacing: -0.01em; }
+  p { margin: 0 0 1rem; }
+
+  .wrap { width: min(1080px, 100% - 2.5rem); margin-inline: auto; }
+
+  /* nav */
+  .nav {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav .wrap { display: flex; align-items: center; gap: 1.5rem; height: 3.75rem; }
+  .nav-name { font-family: "Zakon", "Spectral", Georgia, serif; font-weight: 800; text-decoration: none; margin-right: auto; }
+  .nav-links { display: flex; gap: 1.25rem; list-style: none; margin: 0; padding: 0; font-size: 0.95rem; }
+  .nav-links a { text-decoration: none; color: var(--muted); }
+  .nav-links a:hover { color: var(--ink); }
+  .theme-btn {
+    font: inherit; font-size: 0.9rem; cursor: pointer;
+    background: transparent; color: var(--ink);
+    border: 1.5px solid var(--line); border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+  }
+  .theme-btn:hover { border-color: var(--attn); }
+
+  /* hero */
+  .hero { padding: clamp(3rem, 8vw, 6rem) 0 clamp(3rem, 6vw, 4.5rem); }
+  .hero h1 {
+    font-size: clamp(3.25rem, 9vw, 6.75rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 0.95;
+    margin-bottom: 1.5rem;
+  }
+  .hero h1 span { display: block; }
+  .lede { font-size: 1.35rem; max-width: 40ch; margin-bottom: 0.5rem; }
+  .sub { color: var(--muted); max-width: 44ch; }
+  .available {
+    display: inline-block; margin: 0.75rem 0 1.75rem;
+    background: var(--star); color: var(--star-ink);
+    font-weight: 600; font-size: 0.95rem;
+    padding: 0.35rem 0.9rem; border-radius: 999px;
+  }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+  .btn {
+    display: inline-flex; align-items: center;
+    font-weight: 600; text-decoration: none;
+    padding: 0.7rem 1.2rem; border-radius: 10px;
+    border: 2px solid var(--ink);
+  }
+  .btn:hover { background: var(--attn-soft); }
+  .btn-star { background: var(--star); border-color: var(--star); color: var(--star-ink); }
+  .btn-star:hover { background: var(--star); filter: brightness(1.06); }
+
+  /* sections */
+  section { padding: clamp(3rem, 7vw, 5rem) 0; border-top: 1px solid var(--line); }
+  .section-head { margin-bottom: 2rem; }
+  .measure { max-width: 64ch; }
+
+  /* skills: bento boxes */
+  .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.9rem; }
+  .box {
+    border: 1.5px solid var(--line); border-radius: 16px;
+    background: var(--surface); padding: 1.15rem 1.25rem 1.3rem;
+  }
+  .box h3 { font-size: 1.05rem; margin-bottom: 0.8rem; }
+  .span-2 { grid-column: span 2; } .span-3 { grid-column: span 3; } .span-4 { grid-column: span 4; }
+  .box.hot { background: var(--attn); border-color: var(--attn); color: #2E1C0C; }
+  .box.warm { background: var(--attn-soft); border-color: transparent; }
+  .box.ink { background: var(--ink); border-color: var(--ink); color: var(--bg); }
+  .box.quiet { background: transparent; border-style: dashed; }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.45rem; list-style: none; margin: 0; padding: 0; }
+  .chips li {
+    font-size: 0.88rem; padding: 0.2rem 0.7rem;
+    border: 1.5px solid var(--line); border-radius: 999px;
+    background: var(--bg);
+  }
+  .box.hot .chips li { background: rgba(255, 242, 230, 0.55); border-color: rgba(46, 28, 12, 0.3); }
+  .box.warm .chips li { background: var(--surface); border-color: transparent; }
+  .box.ink .chips li { background: transparent; border-color: color-mix(in srgb, var(--bg) 35%, transparent); }
+  .box.quiet .chips li { background: var(--surface); }
+  .chips li em { font-style: normal; color: var(--muted); }
+
+  /* now */
+  .now {
+    background: var(--surface);
+    border-left: 6px solid var(--attn);
+    border-radius: 0 14px 14px 0;
+    padding: 1.5rem 1.75rem;
+    max-width: 72ch;
+  }
+  .now h3 { margin-bottom: 0.4rem; }
+
+  .meta { display: flex; flex-wrap: wrap; gap: 0.3rem 1.1rem; color: var(--muted); font-size: 0.92rem; margin: 0.35rem 0 1rem; }
+
+  /* projects: cards led by their main result */
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .card {
+    display: flex; flex-direction: column;
+    border: 1.5px solid var(--line); border-radius: 16px;
+    background: var(--surface); padding: 1.5rem;
+  }
+  .card-top { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.88rem; color: var(--muted); margin-bottom: 0.6rem; }
+  .card h3 { margin-bottom: 0.9rem; }
+  .figure-num { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; padding-bottom: 1rem; margin-bottom: 1rem; border-bottom: 1.5px solid var(--line); }
+  .figure-num b { font-family: "Zakon", "Spectral", Georgia, serif; font-size: clamp(2.6rem, 5vw, 3.4rem); font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
+  .figure-num span { color: var(--muted); font-size: 0.95rem; }
+  .card ul.points { margin: 0 0 1.2rem; padding-left: 1.1rem; }
+  .card ul.points li { margin-bottom: 0.35rem; }
+  .card ul.points li::marker { color: var(--attn); }
+  .card .chips { margin-top: auto; }
+  .card figure { margin: 1.25rem 0 0; }
+  .card figure img { width: 100%; border-radius: 10px; border: 1.5px solid var(--line); background: var(--bg); }
+  .card figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 0.5rem; }
+
+  .card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+
+  /* education */
+  .edu { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .edu h3 { font-size: 1.2rem; margin-bottom: 0.25rem; }
+  .edu .meta { margin-bottom: 0.5rem; }
+  .grade { font-family: "Zakon", "Spectral", Georgia, serif; font-weight: 800; font-size: 1.6rem; }
+
+  /* contact */
+  .contact-mail {
+    font-family: "Zakon", "Spectral", Georgia, serif;
+    font-size: clamp(1.5rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.02em;
+    word-break: break-word;
+  }
+  footer { padding: 2rem 0 3rem; color: var(--muted); font-size: 0.9rem; border-top: 1px solid var(--line); }
+
+  @media (max-width: 860px) {
+    .edu, .cards { grid-template-columns: 1fr; }
+    .bento { grid-template-columns: 1fr; }
+    .span-2, .span-3, .span-4 { grid-column: auto; }
+    .nav-links { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .fill { animation: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="nav-name" href="#top">Andrii Humeha</a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme-btn" id="themeBtn" type="button">Dark theme</button>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <h1><span>Andrii</span><span>Humeha</span></h1>
+      <p class="lede">Data Science &amp; AI student building machine learning systems, from model to deployment.</p>
+      <p class="sub">Third year at Breda University of Applied Sciences, studying Law in parallel at Taras Shevchenko National University of Kyiv.</p>
+      <span class="available">Looking for an internship from early 2027</span>
+      <div class="actions">
+        <a class="btn btn-star" href="assets/Andrii_Humeha_CV.pdf" download>Download CV</a>
+        <a class="btn" href="mailto:humehaandrii@gmail.com">Email me</a>
+        <a class="btn" href="https://www.linkedin.com/in/andrii-humeha-1b44a9327/">LinkedIn</a>
+        <a class="btn" href="https://github.com/AndriiHumeha">GitHub</a>
+      </div>
+    </div>
+
+  </div>
+</header>
+
+<main>
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head"><h2>About</h2></div>
+      <div class="measure">
+        <p>I study Data Science &amp; AI at BUas, where I’ve averaged 9.35/10 over my first two years, alongside a part-time Law degree at Taras Shevchenko National University of Kyiv. Most of my projects have been for real clients: language models for Ukrainian, computer vision and robot control for plant research, and the databases, APIs and pipelines that keep ML systems running.</p>
+        <p>What I care about most is understanding why a solution works, not only that it does. I test ideas against simple baselines, check that a metric means what it seems to, and document the limits of what I build as clearly as its results.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="wrap">
+      <div class="section-head"><h2>Skills</h2></div>
+      <div class="bento">
+        <div class="box ink span-2">
+          <h3>Languages &amp; tools</h3>
+          <ul class="chips"><li>Python</li><li>SQL</li><li>Git</li></ul>
+        </div>
+        <div class="box hot span-4">
+          <h3>Specialisations</h3>
+          <ul class="chips"><li>Computer vision</li><li>NLP</li><li>Reinforcement learning</li><li>Prompt engineering</li></ul>
+        </div>
+        <div class="box span-3">
+          <h3>Machine learning</h3>
+          <ul class="chips"><li>PyTorch</li><li>TensorFlow / Keras</li><li>scikit-learn</li><li>XGBoost</li><li>Hugging Face</li></ul>
+        </div>
+        <div class="box warm span-3">
+          <h3>Data &amp; analytics</h3>
+          <ul class="chips"><li>PostgreSQL</li><li>Snowflake</li><li>PySpark</li><li>Power BI</li></ul>
+        </div>
+        <div class="box span-4">
+          <h3>Backend &amp; MLOps</h3>
+          <ul class="chips"><li>FastAPI</li><li>Docker</li><li>GitHub Actions</li><li>Azure ML</li><li>MLflow</li><li>Airflow</li></ul>
+        </div>
+        <div class="box quiet span-2">
+          <h3>Spoken</h3>
+          <ul class="chips"><li>Ukrainian <em>native</em></li><li>English <em>professional</em></li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="now">
+    <div class="wrap">
+      <div class="section-head"><h2>Currently working on</h2></div>
+      <div class="now">
+        <h3>Pricing optimisation for <a href="https://move-intermodal.com/">Move Intermodal</a></h3>
+        <div class="meta"><span>Group project</span><span>Sep 2026 – present</span></div>
+        <p>Building a pricing decision framework: customer segmentation tied to profitability, lane-level demand forecasting linked to train capacity, and price-sensitivity estimates drawn from natural events rather than controlled experiments.</p>
+        <ul class="chips"><li>Snowflake</li><li>Python</li><li>Time series</li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="projects">
+    <div class="wrap">
+      <div class="section-head"><h2>Projects</h2></div>
+
+      <div class="cards">
+
+        <article class="card">
+          <div class="card-top"><span>Group project for <a href="https://www.npec.nl/">NPEC</a></span><span>May – Jun 2026</span></div>
+          <h3>ThalianaCV, a plant phenotyping platform</h3>
+          <div class="figure-num"><b>3</b><span>environments from one set of container images</span></div>
+          <p>A computer vision platform running locally, on-premise and on Azure, retraining itself from user feedback.</p>
+          <ul class="points">
+            <li>Owned the database and backend: PostgreSQL schema, migrations and the FastAPI query layer</li>
+            <li>Built the CLI, ran the cost analysis and led documentation</li>
+          </ul>
+          <ul class="chips"><li>PostgreSQL</li><li>FastAPI</li><li>Docker</li><li>GitHub Actions</li><li>Azure ML</li><li>Airflow</li><li>MLflow</li></ul>
+          <figure>
+            <img src="assets/thaliana_cloud.png" alt="Cloud architecture: CI/CD to GHCR, FastAPI on Azure, and an Azure ML retraining loop" loading="lazy">
+            <figcaption>Cloud deployment, with retraining driven by user corrections.</figcaption>
+          </figure>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><span>Individual project for <a href="https://www.npec.nl/">NPEC</a></span><span>Nov 2025 – Jan 2026</span></div>
+          <h3>Autonomous root tip inoculation</h3>
+          <div class="figure-num"><b>96%</b><span>success rate across 10 simulated plates</span></div>
+          <p>Finds <i>Arabidopsis</i> root tips on a petri dish and drives a simulated Opentrons OT-2 pipette to inoculate each one.</p>
+          <ul class="points">
+            <li>Segmented roots with a patch-based U-Net and test-time augmentation, then traced each primary root through its skeleton graph to find the tip</li>
+            <li>Trained a PPO agent and tuned a PID controller; PID converged cleanly where the agent oscillated, so it went into the final system</li>
+          </ul>
+          <ul class="chips"><li>TensorFlow</li><li>OpenCV</li><li>scikit-image</li><li>PyBullet</li><li>Gymnasium</li><li>Stable-Baselines3</li><li>W&amp;B</li></ul>
+          <figure>
+          <img src="assets/root_sim.gif" alt="Simulated OT-2 pipette moving to each detected root tip" loading="lazy">
+          <figcaption>End-to-end run in simulation: the pipette visits each detected root tip in turn.</figcaption>
+          </figure>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><span>Group project for <a href="https://www.contentintelligence.nl/">Content Intelligence Agency</a></span><span>Sep – Nov 2025</span></div>
+          <h3>Ukrainian emotion classification</h3>
+          <div class="figure-num"><b>0.79</b><span>weighted F1 from our fine-tuned UKR-RoBERTa, up from 0.51</span></div>
+          <p>Video to per-sentence emotion labels across seven classes, in a language with almost no labelled emotion data.</p>
+          <ul class="points">
+            <li>Grew the training set from 48K to 556K sequences with translated and LLM-generated synthetic data</li>
+            <li>Ran the prompt engineering track alone: 150+ prompts over 15 logged iterations took an LLM classifier to 0.84 weighted F1</li>
+          </ul>
+          <ul class="chips"><li>PyTorch</li><li>Hugging Face</li><li>Ollama</li><li>Whisper</li><li>spaCy</li></ul>
+          <figure>
+            <img src="assets/emotion_pipeline.png" alt="Pipeline: input video, transcription, emotion tagging, output file" loading="lazy">
+            <figcaption>The pipeline, with translation as an optional branch.</figcaption>
+          </figure>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><span>Individual project for <a href="https://dkggroep.nl/">DKG</a></span><span>Jan 2025</span></div>
+          <h3>Countertop connector prediction</h3>
+          <div class="figure-num"><b>99%</b><span>accuracy from rules, against 91% for XGBoost</span></div>
+          <p>Predicting from a kitchen’s 3D layout whether its countertop joins need an extra connector piece.</p>
+          <ul class="points">
+            <li>Built a geometry rule set and an XGBoost classifier side by side</li>
+            <li>Showed the client where rules are enough and what ML would need to justify its complexity</li>
+          </ul>
+          <ul class="chips"><li>Python</li><li>XGBoost</li><li>scikit-learn</li><li>pandas</li></ul>
+          <figure>
+            <img src="assets/dkg_layout.png" alt="Countertop layout: red joins need a connector, blue do not, black are fixtures" loading="lazy">
+            <figcaption>Red joins need a connector, blue ones don’t, black shapes are fixtures.</figcaption>
+          </figure>
+        </article>
+
+        <article class="card">
+          <div class="card-top"><span>Individual project for <a href="https://www.ikea.com/nl/">IKEA</a></span><span>Nov 2024</span></div>
+          <h3>IKEA PIN terminal data audit</h3>
+          <div class="figure-num"><b>60</b><span>store locations audited in Power BI</span></div>
+          <p>An interactive dashboard for IKEA’s safety and prevention coordinator, built so non-technical users could explore it themselves.</p>
+          <ul class="points">
+            <li>Transformed and structured the raw data in Power Query</li>
+            <li>Surfaced timestamps preceding their events, duplicated serial numbers and incomplete coverage</li>
+            <li><a href="https://www.linkedin.com/in/andrii-humeha-1b44a9327/details/recommendations/">Recommended by the client on LinkedIn</a></li>
+          </ul>
+          <ul class="chips"><li>Power BI</li><li>Power Query</li><li>DAX</li></ul>
+          <figure>
+            <img src="assets/ikea_dashboard.png" alt="Power BI dashboard summarising faults, trends and recommendations" loading="lazy">
+            <figcaption>Summary page: faults, trends and recommendations.</figcaption>
+          </figure>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="education">
+    <div class="wrap">
+      <div class="section-head"><h2>Education</h2></div>
+      <div class="edu">
+        <div>
+          <h3>BASc Applied Data Science &amp; Artificial Intelligence</h3>
+          <div class="meta"><span>Breda University of Applied Sciences</span><span>2024 – 2028 (expected)</span></div>
+          <p><span class="grade">9.35/10</span> average over the first two years</p>
+        </div>
+        <div>
+          <h3>LLB Law, part-time</h3>
+          <div class="meta"><span>Taras Shevchenko National University of Kyiv</span><span>2024 – 2029 (expected)</span></div>
+          <p>Civil law and legal theory, with an interest in where law meets technology: AI governance, data protection and tech regulation.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="wrap">
+      <div class="section-head"><h2>Contact</h2></div>
+      <p class="measure">The fastest way to reach me is email. I’m happy to walk through any of the projects above, including the ones whose code is private.</p>
+      <p><a class="contact-mail" href="mailto:humehaandrii@gmail.com">humehaandrii@gmail.com</a></p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Andrii Humeha, 2026.</div>
+</footer>
+
+<script>
+  // Hide a project's image if it hasn't been added to assets/ yet.
+  document.querySelectorAll('.card figure img').forEach(function (img) {
+    function drop() { img.closest('figure').remove(); }
+    if (img.complete && img.naturalWidth === 0) drop();
+    else img.addEventListener('error', drop);
+  });
+
+  // Theme toggle: follows the system setting until the visitor picks one.
+  (function () {
+    var btn = document.getElementById('themeBtn');
+    var root = document.documentElement;
+    function current() {
+      var set = root.getAttribute('data-theme');
+      if (set) return set;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    function label() {
+      var next = current() === 'dark' ? 'Light' : 'Dark';
+      btn.textContent = next + ' theme';
+      btn.setAttribute('aria-label', 'Switch to ' + next.toLowerCase() + ' theme');
+    }
+    btn.addEventListener('click', function () {
+      var next = current() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      label();
+    });
+    label();
+  })();
+</script>
+</body>
+</html>
